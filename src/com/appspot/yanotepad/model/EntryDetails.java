@@ -3,30 +3,24 @@ package com.appspot.yanotepad.model;
 import java.util.Date;
 
 public class EntryDetails extends Entry {
-    private final String contents;
+    private final String content;
 
-    public EntryDetails(Entry entry, String contents) {
-        super(entry);
-
-        this.contents = contents;
+    private static String getHeader(String content) {
+        int endOfHeader = content.indexOf('\n');
+        return endOfHeader != -1 ? content.substring(0,endOfHeader) : content;
     }
 
-    private static String getHeader(String contents) {
-        int endOfHeader = contents.indexOf('\n');
-        return endOfHeader != -1 ? contents.substring(0,endOfHeader) : contents;
-    }
-
-    public EntryDetails(String header, Date timestamp, String contents) {
+    public EntryDetails(String header, Date timestamp, String content) {
         super(header, timestamp);
 
-        this.contents = contents;
+        this.content = content;
     }
 
-    public EntryDetails(String contents, Date timestamp) {
-        this(getHeader(contents), timestamp, contents);
+    public EntryDetails(String content, Date timestamp) {
+        this(getHeader(content), timestamp, content);
     }
 
-    public String getContents() {
-        return contents;
+    public String getContent() {
+        return content;
     }
 }

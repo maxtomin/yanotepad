@@ -26,27 +26,29 @@ public class NotepadTest {
         EntryDetails entry = notepad.addEntry("aaa");
 
         assertEquals(entry.getHeader(), "aaa");
-        assertEquals(entry.getContents(), "aaa");
+        assertEquals(entry.getContent(), "aaa");
         assertEquals(entry.getTimestamp(), notepad.now());
         assertEquals(entry.getDocumentId(), "1234");
 
         Document document = documents.getValue();
         assertEquals(document.getOnlyField(Notepad.HEADER_FIELD).getText(), "aaa");
-        assertEquals(document.getOnlyField(Notepad.CONTENTS_FIELD).getText(), "aaa");
+        assertEquals(document.getOnlyField(Notepad.CONTENT_FIELD).getText(), "aaa");
         assertEquals(document.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate(), notepad.now());
     }
 
     @Test
     public void testGetEntryDetails() throws Exception {
-        Entry entry = new Entry("header", notepad.now());
-        entry.setDocumentId("123");
-        Document document = Document.newBuilder().addField(Field.newBuilder().setName(Notepad.CONTENTS_FIELD).setText("header\ncontents")).build();
+        Document document = Document.newBuilder()
+                .addField(Field.newBuilder().setName(Notepad.HEADER_FIELD).setText("header"))
+                .addField(Field.newBuilder().setName(Notepad.CONTENT_FIELD).setText("header\ncontent"))
+                .addField(Field.newBuilder().setName(Notepad.TIMESTAMP_FIELD).setDate(notepad.now()))
+                .build();
         when(index.get("123")).thenReturn(document);
 
-        EntryDetails entryDetails = notepad.getEntryDetails(entry);
+        EntryDetails entryDetails = notepad.getEntryDetails("123");
 
         assertEquals(entryDetails.getHeader(), "header");
-        assertEquals(entryDetails.getContents(), "header\ncontents");
+        assertEquals(entryDetails.getContent(), "header\ncontent");
         assertEquals(entryDetails.getTimestamp(), notepad.now());
         assertEquals(entryDetails.getDocumentId(), "123");
     }

@@ -3,8 +3,6 @@
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.appspot.yanotepad.controller.Notepad" %>
-<%@ page import="com.appspot.yanotepad.model.Entry" %>
-<%@ page import="java.util.List" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -23,21 +21,18 @@
     }
     else
     {
-        List<Entry> entries = new Notepad(user).searchEntries("");
+        String documentId = request.getParameter("documentId");
+        String content = documentId == null ? "" : new Notepad(user).getEntryDetails(documentId).getContent();
+
         pageContext.setAttribute("user", user);
-        pageContext.setAttribute("entries", entries);
+        pageContext.setAttribute("content", content);
 %>
 Logged in as <b>${fn:escapeXml(user.nickname)}</b> - <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">Logout</a>
-<form action="entry.jsp">
-    <input type="submit" value="Add">
+<form action="save" method="post">
+    <div><textarea name="content" rows="3" cols="60"></textarea>${fn:escapeXml(content)}</div>
+    <div><input type="submit" value="Save" /></div>
 </form>
-<form>
-    <input type="text" name="Query">
-    <input type="submit" value="Search">
-</form>
-<c:forEach var="entry" items="${entries}">
-    <div><b>${entry.header}</b></div>
-</c:forEach>
+
 <%
     }
 %>

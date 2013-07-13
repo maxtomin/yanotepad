@@ -28,10 +28,10 @@ public class BaseController {
         if ( queryOptions == null )
         {
             queryOptions = QueryOptions.newBuilder()
-                    .setFieldsToReturn("header", "published")
+                    .setFieldsToReturn("header", "timestamp")
                     .setSortOptions(SortOptions.newBuilder()
                             .addSortExpression(SortExpression.newBuilder()
-                                    .setExpression("published")
+                                    .setExpression("timestamp")
                                     .setDirection(SortExpression.SortDirection.DESCENDING)
                                     .setDefaultValue("")
                             )

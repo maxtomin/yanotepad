@@ -12,16 +12,16 @@ import java.util.List;
 
 public class Notepad extends BaseController {
     static final String HEADER_FIELD = "header";
-    static final String CONTENTS_FIELD = "contents";
+    static final String CONTENT_FIELD = "content";
     static final String TIMESTAMP_FIELD = "timestamp";
 
     public Notepad(User user) {
         super(user);
     }
 
-    public EntryDetails addEntry(String contents)
+    public EntryDetails addEntry(String content)
     {
-        EntryDetails result = new EntryDetails(contents, now());
+        EntryDetails result = new EntryDetails(content, now());
 
         addEntry(result);
 
@@ -32,7 +32,7 @@ public class Notepad extends BaseController {
     {
         Document document = Document.newBuilder()
                 .addField(Field.newBuilder().setName(HEADER_FIELD).setText(entry.getHeader()))
-                .addField(Field.newBuilder().setName(CONTENTS_FIELD).setText(entry.getContents()))
+                .addField(Field.newBuilder().setName(CONTENT_FIELD).setText(entry.getContent()))
                 .addField(Field.newBuilder().setName(TIMESTAMP_FIELD).setDate(entry.getTimestamp()))
                 .build();
 
@@ -59,17 +59,22 @@ public class Notepad extends BaseController {
         return createEntries(getIndex().search(Query.newBuilder().setOptions(getQueryOptions()).build(query)).getResults());
     }
 
-    public EntryDetails getEntryDetails(Entry entry)
+    public EntryDetails getEntryDetails(String documentId)
     {
-        if (!entry.isPersisted())
+        Document document = getIndex().get(documentId);
+        if ( document == null )
         {
-            throw new IllegalArgumentException("Entry is not yet persisted");
+            return null;
         }
 
-        String contents = getIndex().get(entry.getDocumentId()).getOnlyField(CONTENTS_FIELD).getText();
+        String header = document.getOnlyField(HEADER_FIELD).getText();
+        String content = document.getOnlyField(CONTENT_FIELD).getText();
+        Date timestamp = document.getOnlyField(TIMESTAMP_FIELD).getDate();
 
+        EntryDetails result = new EntryDetails(header, timestamp, content);
+        result.setDocumentId(documentId);
 
-        return new EntryDetails(entry, contents);
+        return result;
     }
 
     private List<Entry> createEntries(Collection<ScoredDocument> documents) {
