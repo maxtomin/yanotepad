@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 public class NotepadTest {
     private NotepadMock notepad;
@@ -71,6 +72,17 @@ public class NotepadTest {
         assertEquals(document2.getOnlyField(Notepad.HEADER_FIELD).getText(), "bbb");
         assertEquals(document2.getOnlyField(Notepad.CONTENT_FIELD).getText(), "bbb");
         assertEquals(document2.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate(), time2);
+    }
+
+    @Test
+    public void testDeleteEntry() throws Exception {
+        mockIndexPut("1234");
+
+        EntryDetails entry = notepad.addEntry("aaa");
+        assertEquals(entry.getDocumentId(), "1234");
+
+        notepad.deleteEntry(entry.getDocumentId());
+        assertNull(notepad.getEntryDetails(entry.getDocumentId()));
     }
 
     @Test

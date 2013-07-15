@@ -34,6 +34,10 @@ Logged in as <b>${fn:escapeXml(user.nickname)}</b> - <a href="<%= userService.cr
     <div><textarea name="content" rows="3" cols="60">${fn:escapeXml(content)}</textarea></div>
     <div><input type="submit" value="Save" /></div>
 </form>
+<form action="delete" method="post">
+    <input type="hidden" name="documentId" value="${fn:escapeXml(documentId)}" />
+    <div><input type="submit" value="Delete" /></div>
+</form>
 
 <%
     }

@@ -84,7 +84,7 @@ public class Notepad extends BaseController {
             query = "";
         }
 
-        return createEntries(getIndex().search(Query.newBuilder().setOptions(getQueryOptions()).build(query)).getResults());
+        return toEntries(getIndex().search(Query.newBuilder().setOptions(getQueryOptions()).build(query)).getResults());
     }
 
     public EntryDetails getEntryDetails(String documentId)
@@ -105,17 +105,21 @@ public class Notepad extends BaseController {
         return result;
     }
 
-    private List<Entry> createEntries(Collection<ScoredDocument> documents) {
+    public void deleteEntry(String documentId) {
+        getIndex().delete(documentId);
+    }
+
+    private List<Entry> toEntries(Collection<ScoredDocument> documents) {
         ArrayList<Entry> result = new ArrayList<>(documents.size());
 
         for (ScoredDocument document : documents) {
-            result.add(createEntry(document));
+            result.add(toEntry(document));
         }
 
         return result;
     }
 
-    private Entry createEntry(ScoredDocument document) {
+    private Entry toEntry(ScoredDocument document) {
         String header = document.getOnlyField(HEADER_FIELD).getText();
         Date timestamp = document.getOnlyField(TIMESTAMP_FIELD).getDate();
 
