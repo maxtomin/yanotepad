@@ -33,7 +33,7 @@ public class BaseController {
                             .addSortExpression(SortExpression.newBuilder()
                                     .setExpression("timestamp")
                                     .setDirection(SortExpression.SortDirection.DESCENDING)
-                                    .setDefaultValue("")
+                                    .setDefaultValue("1900-01-01")
                             )
                     )
                     .build();
