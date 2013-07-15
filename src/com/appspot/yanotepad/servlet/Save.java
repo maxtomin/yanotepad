@@ -4,6 +4,7 @@ import com.appspot.yanotepad.controller.Notepad;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.repackaged.com.google.common.base.StringUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,8 +18,18 @@ public class Save extends HttpServlet {
         User user = userService.getCurrentUser();
 
         String content = request.getParameter("content");
+        String documentId = request.getParameter("documentId");
 
-        new Notepad(user).addEntry(content);
+        Notepad notepad = new Notepad(user);
+
+        if (StringUtil.isEmptyOrWhitespace(documentId))
+        {
+            notepad.addEntry(content);
+        }
+        else
+        {
+            notepad.updateEntry(documentId, content);
+        }
 
         response.sendRedirect("/index.jsp");
     }

@@ -23,4 +23,8 @@ public class NotepadMock extends Notepad {
     protected Date now() {
         return now;
     }
+
+    protected void advanceTime(long delta) {
+        now = new Date(now.getTime() + delta);
+    }
 }

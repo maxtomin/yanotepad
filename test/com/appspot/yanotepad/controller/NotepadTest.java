@@ -5,19 +5,29 @@ import com.appspot.yanotepad.model.EntryDetails;
 import com.google.appengine.api.search.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 
 public class NotepadTest {
-    private final NotepadMock notepad = new NotepadMock();
-    private final Index index = notepad.getIndex();
+    private NotepadMock notepad;
+    private Index index;
 
-    private ArgumentCaptor<Document> documents = ArgumentCaptor.forClass(Document.class);
+    private ArgumentCaptor<Document> documents;
+
+    @BeforeMethod
+    public void setUp() throws Exception {
+        notepad = new NotepadMock();
+        index = notepad.getIndex();
+
+        documents = ArgumentCaptor.forClass(Document.class);
+    }
 
     @Test
     public void testAddEntry() throws Exception {
@@ -34,6 +44,33 @@ public class NotepadTest {
         assertEquals(document.getOnlyField(Notepad.HEADER_FIELD).getText(), "aaa");
         assertEquals(document.getOnlyField(Notepad.CONTENT_FIELD).getText(), "aaa");
         assertEquals(document.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate(), notepad.now());
+    }
+
+    @Test
+    public void testUpdateEntry() throws Exception {
+        mockIndexPut("1234");
+
+        Date time1 = notepad.now();
+        EntryDetails entry = notepad.addEntry("aaa");
+
+        notepad.advanceTime(1);
+        Date time2 = notepad.now();
+        entry = notepad.updateEntry(entry.getDocumentId(),"bbb");
+
+        assertEquals(entry.getHeader(), "bbb");
+        assertEquals(entry.getContent(), "bbb");
+        assertEquals(entry.getTimestamp(), time2);
+        assertEquals(entry.getDocumentId(), "1234");
+
+        Document document1 = documents.getAllValues().get(0);
+        assertEquals(document1.getOnlyField(Notepad.HEADER_FIELD).getText(), "aaa");
+        assertEquals(document1.getOnlyField(Notepad.CONTENT_FIELD).getText(), "aaa");
+        assertEquals(document1.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate(), time1);
+
+        Document document2 = documents.getAllValues().get(1);
+        assertEquals(document2.getOnlyField(Notepad.HEADER_FIELD).getText(), "bbb");
+        assertEquals(document2.getOnlyField(Notepad.CONTENT_FIELD).getText(), "bbb");
+        assertEquals(document2.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate(), time2);
     }
 
     @Test

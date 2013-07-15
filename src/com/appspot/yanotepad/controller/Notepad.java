@@ -50,6 +50,34 @@ public class Notepad extends BaseController {
         return documentId;
     }
 
+    public EntryDetails updateEntry(String documentId, String content)
+    {
+        EntryDetails result = new EntryDetails(content, now());
+        result.setDocumentId(documentId);
+
+        updateEntry(result);
+
+        return result;
+    }
+
+    public void updateEntry(EntryDetails entry)
+    {
+        Document document = Document.newBuilder()
+                .addField(Field.newBuilder().setName(HEADER_FIELD).setText(entry.getHeader()))
+                .addField(Field.newBuilder().setName(CONTENT_FIELD).setText(entry.getContent()))
+                .addField(Field.newBuilder().setName(TIMESTAMP_FIELD).setDate(entry.getTimestamp()))
+                .setId(entry.getDocumentId())
+                .build();
+
+        PutResponse response = getIndex().put(document);
+
+        OperationResult operationResult = response.getResults().get(0);
+        if (operationResult.getCode() != StatusCode.OK)
+        {
+            throw new PutException(operationResult);
+        }
+    }
+
     public List<Entry> searchEntries(String query) {
         if (query == null)
         {

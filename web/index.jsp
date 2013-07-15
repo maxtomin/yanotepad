@@ -36,7 +36,12 @@ Logged in as <b>${fn:escapeXml(user.nickname)}</b> - <a href="<%= userService.cr
     <input type="submit" value="Search">
 </form>
 <c:forEach var="entry" items="${entries}">
-    <div><b>${entry.header}</b></div>
+    <div><b>${entry.header}</b>
+        <form action="entry.jsp">
+            <input type="hidden" name="documentId" value="${entry.documentId}">
+            <input type="submit" value="Edit">
+        </form>
+    </div>
 </c:forEach>
 <%
     }
