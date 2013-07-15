@@ -8,6 +8,12 @@
 <html>
   <head>
     <title>Yet Another Notepad</title>
+    <script>
+        function goBack()
+        {
+          window.history.back()
+        }
+    </script>
   </head>
   <body>
 <%
@@ -38,7 +44,7 @@ Logged in as <b>${fn:escapeXml(user.nickname)}</b> - <a href="<%= userService.cr
     <input type="hidden" name="documentId" value="${fn:escapeXml(documentId)}" />
     <div><input type="submit" value="Delete" /></div>
 </form>
-
+<input type="button" value="Back" onclick="goBack()">
 <%
     }
 %>
