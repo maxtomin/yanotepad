@@ -23,7 +23,13 @@
     }
     else
     {
-        List<Entry> entries = new Notepad(user).searchEntries("");
+        String query = request.getParameter("query");
+        if (query == null)
+        {
+            query = "";
+        }
+
+        List<Entry> entries = new Notepad(user).searchEntries(query);
         pageContext.setAttribute("user", user);
         pageContext.setAttribute("entries", entries);
 %>
@@ -31,8 +37,8 @@ Logged in as <b>${fn:escapeXml(user.nickname)}</b> - <a href="<%= userService.cr
 <form action="entry.jsp">
     <input type="submit" value="Add">
 </form>
-<form>
-    <input type="text" name="Query">
+<form action="index.jsp">
+    <input type="text" name="query">
     <input type="submit" value="Search">
 </form>
 <c:forEach var="entry" items="${entries}">
