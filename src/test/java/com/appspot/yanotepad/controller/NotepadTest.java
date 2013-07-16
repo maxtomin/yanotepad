@@ -3,18 +3,18 @@ package com.appspot.yanotepad.controller;
 import com.appspot.yanotepad.model.Entry;
 import com.appspot.yanotepad.model.EntryDetails;
 import com.google.appengine.api.search.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNull;
 
 public class NotepadTest {
     private NotepadMock notepad;
@@ -22,7 +22,7 @@ public class NotepadTest {
 
     private ArgumentCaptor<Document> documents;
 
-    @BeforeMethod
+    @Before
     public void setUp() throws Exception {
         notepad = new NotepadMock();
         index = notepad.getIndex();
@@ -36,15 +36,15 @@ public class NotepadTest {
 
         EntryDetails entry = notepad.addEntry("aaa");
 
-        assertEquals(entry.getHeader(), "aaa");
-        assertEquals(entry.getContent(), "aaa");
-        assertEquals(entry.getTimestamp(), notepad.now());
-        assertEquals(entry.getDocumentId(), "1234");
+        assertEquals("aaa", entry.getHeader());
+        assertEquals("aaa", entry.getContent());
+        assertEquals(notepad.now(), entry.getTimestamp());
+        assertEquals("1234", entry.getDocumentId());
 
         Document document = documents.getValue();
-        assertEquals(document.getOnlyField(Notepad.HEADER_FIELD).getText(), "aaa");
-        assertEquals(document.getOnlyField(Notepad.CONTENT_FIELD).getText(), "aaa");
-        assertEquals(document.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate(), notepad.now());
+        assertEquals("aaa", document.getOnlyField(Notepad.HEADER_FIELD).getText());
+        assertEquals("aaa", document.getOnlyField(Notepad.CONTENT_FIELD).getText());
+        assertEquals(notepad.now(), document.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate());
     }
 
     @Test
@@ -58,20 +58,20 @@ public class NotepadTest {
         Date time2 = notepad.now();
         entry = notepad.updateEntry(entry.getDocumentId(),"bbb");
 
-        assertEquals(entry.getHeader(), "bbb");
-        assertEquals(entry.getContent(), "bbb");
-        assertEquals(entry.getTimestamp(), time2);
-        assertEquals(entry.getDocumentId(), "1234");
+        assertEquals("bbb", entry.getHeader());
+        assertEquals("bbb", entry.getContent());
+        assertEquals(time2, entry.getTimestamp());
+        assertEquals("1234", entry.getDocumentId());
 
         Document document1 = documents.getAllValues().get(0);
-        assertEquals(document1.getOnlyField(Notepad.HEADER_FIELD).getText(), "aaa");
-        assertEquals(document1.getOnlyField(Notepad.CONTENT_FIELD).getText(), "aaa");
-        assertEquals(document1.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate(), time1);
+        assertEquals("aaa", document1.getOnlyField(Notepad.HEADER_FIELD).getText());
+        assertEquals("aaa", document1.getOnlyField(Notepad.CONTENT_FIELD).getText());
+        assertEquals(time1, document1.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate());
 
         Document document2 = documents.getAllValues().get(1);
-        assertEquals(document2.getOnlyField(Notepad.HEADER_FIELD).getText(), "bbb");
-        assertEquals(document2.getOnlyField(Notepad.CONTENT_FIELD).getText(), "bbb");
-        assertEquals(document2.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate(), time2);
+        assertEquals("bbb", document2.getOnlyField(Notepad.HEADER_FIELD).getText());
+        assertEquals("bbb", document2.getOnlyField(Notepad.CONTENT_FIELD).getText());
+        assertEquals(time2, document2.getOnlyField(Notepad.TIMESTAMP_FIELD).getDate());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class NotepadTest {
         mockIndexPut("1234");
 
         EntryDetails entry = notepad.addEntry("aaa");
-        assertEquals(entry.getDocumentId(), "1234");
+        assertEquals("1234", entry.getDocumentId());
 
         notepad.deleteEntry(entry.getDocumentId());
         assertNull(notepad.getEntryDetails(entry.getDocumentId()));
@@ -96,10 +96,10 @@ public class NotepadTest {
 
         EntryDetails entryDetails = notepad.getEntryDetails("123");
 
-        assertEquals(entryDetails.getHeader(), "header");
-        assertEquals(entryDetails.getContent(), "header\ncontent");
-        assertEquals(entryDetails.getTimestamp(), notepad.now());
-        assertEquals(entryDetails.getDocumentId(), "123");
+        assertEquals("header", entryDetails.getHeader());
+        assertEquals("header\ncontent", entryDetails.getContent());
+        assertEquals(notepad.now(), entryDetails.getTimestamp());
+        assertEquals("123", entryDetails.getDocumentId());
     }
 
     @Test
@@ -117,12 +117,12 @@ public class NotepadTest {
         when(index.search(Mockito.<Query>any())).thenReturn(results);
 
         List<Entry> query = notepad.searchEntries("query");
-        assertEquals(query.size(), 1);
+        assertEquals(1, query.size());
         Entry entry = query.get(0);
 
-        assertEquals(entry.getHeader(), "header");
-        assertEquals(entry.getTimestamp(), notepad.now());
-        assertEquals(entry.getDocumentId(), "333");
+        assertEquals("header", entry.getHeader());
+        assertEquals(notepad.now(), entry.getTimestamp());
+        assertEquals("333", entry.getDocumentId());
     }
 
     private void mockIndexPut(String id) {
