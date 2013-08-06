@@ -10,6 +10,7 @@
 <html>
   <head>
     <title>Yet Another Notepad</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
 <%
@@ -35,13 +36,17 @@
         pageContext.setAttribute("entries", entries);
 %>
 Logged in as <b>${fn:escapeXml(user.nickname)}</b> - <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">Logout</a>
-<form action="entry.jsp">
-    <input type="submit" value="Add">
-</form>
-<form action="index.jsp">
-    <input type="text" name="query" value="${query}">
-    <input type="submit" value="Search">
-</form>
+<div>&nbsp;</div>
+<div>
+    <form action="entry.jsp">
+        <input type="submit" value="Add">
+    </form>
+    <form action="index.jsp">
+        <input type="text" name="query" value="${query}">
+        <input type="submit" value="Search">
+    </form>
+</div>
+<div>&nbsp;</div>
 <c:forEach var="entry" items="${entries}">
     <div><b>${entry.header}</b>
         <form action="entry.jsp">

@@ -1,9 +1,9 @@
-App Engine Yet Anoter Notepad
+App Engine Yet Another Notepad
 Copyright (C) 2013 Max Tomin
 
-## SImple notepad application for use with App Engine Java.
+## Simple notepad application for use with App Engine Java.
 
-Requires [Apache Maven](http://maven.apache.org) 3.0 or greater, and JDK 6+ in order to run.
+Requires [Apache Maven](http://maven.apache.org) 3.0 or greater, and JDK 7+ in order to run.
 
 To build, run
 
