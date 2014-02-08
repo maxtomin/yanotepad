@@ -2,6 +2,7 @@ hotspot.log
 *.iml
 *.ipr
 *.iws
+*.txt
 target/
 classes/
 /var

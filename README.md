@@ -1,5 +1,5 @@
 App Engine Yet Another Notepad
-Copyright (C) 2013 Max Tomin
+Copyright (C) 2013-14 Max Tomin
 
 ## Simple notepad application for use with App Engine Java.
 
@@ -19,8 +19,10 @@ To start the app, use the [App Engine Maven Plugin](http://code.google.com/p/app
 
 IntelliJ IDEA setup
 
-   1. Make sure GWT, AppEngine and Maven plugins are installed
-   2. Import new project from Maven (use .pom file provided)
-   3. Import new module from Maven (use .pom file provided)
-   4. Add "Google AppEngine Dev Server" run configuration with default settings
-   5. Run it
+   1. Make sure GWT, AppEngine and Maven plugins are installed and configured
+   2. File - Import Project... - select .pom file
+   3. "Frameworks detected: Google App Engine" facet should pop-up.
+      If no, you can add it manually in Modules config: yanotepad/Web - right click - Add - Google App Engine
+   4. Tick "Build on make" for yanotepad:war artifact
+   5. On Run/Debug config, add Google AppEngine Dev Server
+   6. Run it
