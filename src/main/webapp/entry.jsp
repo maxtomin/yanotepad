@@ -35,17 +35,16 @@
         pageContext.setAttribute("content", content);
         pageContext.setAttribute("documentId", documentId);
 %>
-Logged in as <b>${fn:escapeXml(user.nickname)}</b> - <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">Logout</a>
-<form action="save" method="post">
-    <input type="hidden" name="documentId" value="${fn:escapeXml(documentId)}" />
+<p>Logged in as <b>${fn:escapeXml(user.nickname)}</b> - <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">Logout</a></p>
+<form action="apply" method="post">
+    <div>
+        <input type="hidden" name="documentId" value="${fn:escapeXml(documentId)}" />
+        <input type="submit" name="action" value="Save"/>
+        <input type="submit" name="action" value="Delete"/>
+        <input type="button" value="Back" onclick="goBack()">
+    </div>
     <div><textarea name="content" rows="3" cols="60">${fn:escapeXml(content)}</textarea></div>
-    <input type="submit" value="Save" />
 </form>
-<form action="delete" method="post">
-    <input type="hidden" name="documentId" value="${fn:escapeXml(documentId)}" />
-    <input type="submit" value="Delete" />
-</form>
-<input type="button" value="Back" onclick="goBack()">
 <%
     }
 %>

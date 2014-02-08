@@ -11,14 +11,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class Delete extends HttpServlet {
+public class Apply extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
 
+        String content = request.getParameter("content");
         String documentId = request.getParameter("documentId");
+        if ( documentId == null )
+        {
+            documentId = "";
+        }
+        String action = request.getParameter("action");
 
-        new Notepad(user).deleteEntry(documentId);
+        Notepad notepad = new Notepad(user);
+
+        if ("Delete".equals(action))
+        {
+            if ( !documentId.isEmpty() )
+            {
+                notepad.deleteEntry(documentId);
+            }
+        }
+        else if ( documentId.isEmpty() )
+        {
+            notepad.addEntry(content);
+        }
+        else
+        {
+            notepad.updateEntry(documentId, content);
+        }
 
         response.sendRedirect("/index.jsp");
     }

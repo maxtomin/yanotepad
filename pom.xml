@@ -3,14 +3,14 @@
 
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
-    <version>0.6</version>
+    <version>0.7</version>
 
     <groupId>com.appspot.yanotepad</groupId>
     <artifactId>yanotepad</artifactId>
 
     <properties>
         <appengine.app.version>2</appengine.app.version>
-        <appengine.target.version>1.7.7</appengine.target.version>
+        <appengine.target.version>1.8.9</appengine.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

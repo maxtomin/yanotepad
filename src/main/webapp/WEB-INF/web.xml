@@ -6,19 +6,11 @@
            version="2.5">
 
     <servlet>
-        <servlet-name>save</servlet-name>
-        <servlet-class>com.appspot.yanotepad.servlet.Save</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>delete</servlet-name>
-        <servlet-class>com.appspot.yanotepad.servlet.Delete</servlet-class>
+        <servlet-name>apply</servlet-name>
+        <servlet-class>com.appspot.yanotepad.servlet.Apply</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>save</servlet-name>
-        <url-pattern>/save</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>delete</servlet-name>
-        <url-pattern>/delete</url-pattern>
+        <servlet-name>apply</servlet-name>
+        <url-pattern>/apply</url-pattern>
     </servlet-mapping>
 </web-app>

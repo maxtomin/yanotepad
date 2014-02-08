@@ -27,16 +27,7 @@ public class BaseController {
     protected QueryOptions getQueryOptions() {
         if ( queryOptions == null )
         {
-            queryOptions = QueryOptions.newBuilder()
-                    .setFieldsToReturn("header", "timestamp")
-                    .setSortOptions(SortOptions.newBuilder()
-                            .addSortExpression(SortExpression.newBuilder()
-                                    .setExpression("timestamp")
-                                    .setDirection(SortExpression.SortDirection.DESCENDING)
-                                    .setDefaultValue("1900-01-01")
-                            )
-                    )
-                    .build();
+            queryOptions = QueryOptions.newBuilder().setFieldsToReturn("header").build();
         }
 
         return queryOptions;
