@@ -27,7 +27,7 @@ public class BaseController {
     protected QueryOptions getQueryOptions() {
         if ( queryOptions == null )
         {
-            queryOptions = QueryOptions.newBuilder().setFieldsToReturn("header").build();
+            queryOptions = QueryOptions.newBuilder().setFieldsToReturn("header", "timestamp").build();
         }
 
         return queryOptions;
