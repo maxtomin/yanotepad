@@ -9,6 +9,7 @@
   <head>
     <title>Yet Another Notepad</title>
     <link href="style.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width" />
     <script>
         function goBack()
         {

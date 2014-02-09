@@ -11,6 +11,7 @@
   <head>
     <title>Yet Another Notepad</title>
     <link href="style.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width" />
   </head>
   <body>
 <%
@@ -38,12 +39,12 @@
 Logged in as <b>${fn:escapeXml(user.nickname)}</b> - <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">Logout</a>
 <div>&nbsp;</div>
 <div>
-    <form action="entry.jsp">
-        <input type="submit" value="Add">
-    </form>
     <form action="index.jsp">
         <input type="text" name="query" value="${query}">
         <input type="submit" value="Search">
+    </form>
+    <form action="entry.jsp">
+        <input type="submit" value="Add">
     </form>
 </div>
 <div>&nbsp;</div>
